@@ -120,7 +120,14 @@ class Grid(object):
             self.surface[led] = gridget.surface[led]
 
     def tick(self, tick):
-        pass
+        # Get active exact gridget
+        grid = self.menu.menu[self.menu.current][0]
+        gridget = grid[self.menu.grid.channel] if isinstance(grid, list) else grid
+        # Try to tick
+        try:
+            gridget.tick(tick)
+        except AttributeError:
+            pass # Tick not implemented on that gidget
 
 ##############################################################################
 

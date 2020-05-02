@@ -121,3 +121,6 @@ class Menu(Gridget):
         else:
             self.grid.focus(gridget)
             self.draw()
+
+    def tick(self, tick):
+        pass

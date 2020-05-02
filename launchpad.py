@@ -63,6 +63,7 @@ class LaunchPad(Grid):
         # causing a perceptible lag in visual feedback. It doesn't
         # happen if we keep sending messages continuously.
         self.grid_out.send(mido.Message("active_sensing"))
+        super().tick(tick)
 
 
 class LPSurface(object):
