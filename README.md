@@ -162,6 +162,9 @@ Note:
 Griode saves all persistent information to the `state/` subdirectory.
 If you want to reset Griode (or some of its subsystems) to factory defaults,
 you can wipe out this directory (or some of the files therein).
+The directory name and path can be configured within the "persistence.py" file.
+Persistence can be disabled in the same file, with option status,
+it may be wanted for read-only filesystem or SD card lifetime saving.
 
 
 ### Starting automatically on boot

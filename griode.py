@@ -14,7 +14,7 @@ from gridgets import MENU, Menu
 from mixer import Faders, Mixer
 import notes
 from palette import palette
-from persistence import cache, persistent_attrs, persistent_attrs_init
+from persistence import cache, cache_close, persistent_attrs, persistent_attrs_init
 from pickers import ColorPicker, InstrumentPicker, NotePicker, ScalePicker
 import scales
 
@@ -179,8 +179,7 @@ def main():
             griode.clock.once()
     except KeyboardInterrupt:
         show_pattern(griode, PATTERN_SAVING, palette.ACTIVE, palette.BLACK)
-        for db in cache.values():
-            db.close()
+        cache_close()
         show_pattern(griode, PATTERN_DONE, palette.ACTIVE, palette.BLACK)
 
 

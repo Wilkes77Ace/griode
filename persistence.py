@@ -1,11 +1,19 @@
 import logging
 import shelve
+import os
 
+status = False
+directory = "state"
 cache = {}
 
 def shelve_open(filename):
-    if filename not in cache:
-        cache[filename] = shelve.open(filename, writeback=True)
+    if status:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        if filename not in cache:
+            cache[filename] = shelve.open(filename, writeback=True)
+    else:
+        cache[filename] = {}
     return cache[filename]
 
 def persistent_attrs(**kwargs):
@@ -29,8 +37,13 @@ def persistent_attrs(**kwargs):
 
 def persistent_attrs_init(self, id_str=None):
     if id_str is None:
-        self.db_filename = "state/{}.sav".format(self.__class__.__name__)
+        self.db_filename = "{}/{}.sav".format(directory, self.__class__.__name__)
     else:
-        self.db_filename = "state/{}__{}.sav".format(self.__class__.__name__, id_str)
+        self.db_filename = "{}/{}__{}.sav".format(directory, self.__class__.__name__, id_str)
     logging.debug("Opening shelf {}".format(self.db_filename))
     self.db = shelve_open(self.db_filename)
+
+def cache_close():
+    if status:
+        for db in cache.values():
+            db.close()
