@@ -1,7 +1,7 @@
 import logging
 import mido
 
-from gridgets import ARROWS, MENU
+from gridgets import ARROWS, MENU1, MENU2
 from griode import Grid
 from palette import palette
 
@@ -52,8 +52,8 @@ class LaunchPad(Grid):
             gridget.pad_pressed(row, column, velocity)
         elif isinstance(led, str):
             # Only emit button_pressed when the button is pressed
-            # (i.e. not when it is released, which corresponds to value=0)
-            if message.value == 127:
+            # (i.e. not when it is released, which corresponds to value/velocity=0)
+            if ((message.type == "control_change" and message.value == 127) or (message.type == "note_on" and message.velocity > 0)):
                 gridget.button_pressed(led)
 
     def tick(self, tick):
@@ -97,7 +97,7 @@ class LaunchpadPro(LaunchPad):
             note = 10*row + column
             message2led["NOTE", note] = row, column
             led2message[row, column] = "NOTE", note
-    for i, button in enumerate(ARROWS + MENU):
+    for i, button in enumerate(ARROWS + MENU1):
         control = 91 + i
         message2led["CC", control] = button
         led2message[button] = "CC", control
@@ -121,7 +121,7 @@ class LaunchpadMK2(LaunchPad):
             note = 10*row + column
             message2led["NOTE", note] = row, column
             led2message[row, column] = "NOTE", note
-    for i, button in enumerate(ARROWS + MENU):
+    for i, button in enumerate(ARROWS + MENU1):
         control = 104 + i
         message2led["CC", control] = button
         led2message[button] = "CC", control
@@ -140,9 +140,13 @@ class LaunchpadS(LaunchPad):
             note = 16*(8-row) + column-1
             message2led["NOTE", note] = row, column
             led2message[row, column] = "NOTE", note
-    for i, button in enumerate(ARROWS + MENU):
+    for i, button in enumerate(ARROWS + MENU1):
         control = 104 + i
         message2led["CC", control] = button
         led2message[button] = "CC", control
+    for i, button in enumerate(MENU2):
+        control = 8*( i*2 + 1)
+        message2led["NOTE", control] = button
+        led2message[button] = "NOTE", control
 
     setup = []

@@ -7,7 +7,9 @@ from palette import palette
 # And first, a few constants
 
 ARROWS = "UP DOWN LEFT RIGHT".split()
-MENU = "BUTTON_1 BUTTON_2 BUTTON_3 BUTTON_4".split()
+MENU1 = "BUTTON_1 BUTTON_2 BUTTON_3 BUTTON_4".split()
+MENU2 = "BUTTON_A BUTTON_B BUTTON_C BUTTON_D BUTTON_E BUTTON_F BUTTON_G BUTTON_H".split()
+MENU = MENU1 + MENU2
 
 ##############################################################################
 
@@ -89,6 +91,9 @@ class Menu(Gridget):
                 self.grid.bpmsetter,
             ],
         )
+        for btn in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+            if btn in self.grid.sounds_grids.keys():
+                self.menu["BUTTON_{}".format(btn)] = [ self.grid.sounds_grids[btn] ]
         self.current = "BUTTON_2"
         self.draw()
 

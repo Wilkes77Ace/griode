@@ -16,6 +16,7 @@ import notes
 from palette import palette
 from persistence import cache, cache_close, persistent_attrs, persistent_attrs_init
 from pickers import ColorPicker, InstrumentPicker, NotePicker, ScalePicker
+from sounds import Sounds
 import scales
 
 
@@ -91,6 +92,7 @@ class Grid(object):
         persistent_attrs_init(self, grid_name)
         self.surface_map = {}  # maps leds to gridgets
         self.colorpicker = ColorPicker(self)
+        self.sounds_grids = Sounds.get_grids(self)
         self.faders = Faders(self)
         self.bpmsetter = BPMSetter(self)
         self.notepickers = [NotePicker(self, i) for i in range(16)]
